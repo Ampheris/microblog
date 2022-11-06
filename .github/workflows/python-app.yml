@@ -27,6 +27,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pytest
+        python3 -m venv venv
+        source venv/bin/activate
+        make install-dev
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test with make test
       run: |
