@@ -5,6 +5,7 @@ Contains tests for app.models.Post class
 import pytest
 from app.models import Post
 
+
 @pytest.fixture
 def post1():
     """
@@ -14,7 +15,6 @@ def post1():
         title='First post',
         body='Hello this is my firtst post',
     )
-
 
 
 def test_new_post(post1):

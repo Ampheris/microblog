@@ -4,6 +4,7 @@ Fixtures for integration tests
 # pylint: disable=redefined-outer-name,unused-argument
 import pytest
 
+
 @pytest.fixture
 def user_dict():
     """
@@ -18,7 +19,6 @@ def user_dict():
     return data
 
 
-
 @pytest.fixture
 def post_dict():
     """
@@ -28,7 +28,6 @@ def post_dict():
         "post": "This is my first post",
     }
     return data
-
 
 
 @pytest.fixture
@@ -44,7 +43,6 @@ def register_user_response(client, user_dict):
     return response
 
 
-
 @pytest.fixture
 def login_user_response(client, register_user_response, user_dict):
     """
@@ -56,7 +54,6 @@ def login_user_response(client, register_user_response, user_dict):
         follow_redirects=True,
     )
     return response
-
 
 
 @pytest.fixture

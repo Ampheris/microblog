@@ -8,31 +8,32 @@ from logging import Formatter
 from dotenv import load_dotenv
 from flask import request
 
-
-basedir = os.path.abspath(os.path.dirname(__file__) +  "/..")
+basedir = os.path.abspath(os.path.dirname(__file__) + "/..")
 load_dotenv(os.path.join(basedir, '.env'))
-
 
 
 class Config():
     """Base configuration"""
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'app.db')
+                              'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 
 class ProdConfig(Config):
     """Production configuration"""
     ENV = "production"
     DEBUG = False
 
+
 class DevConfig(Config):
     """Development configuration"""
-    ENV = 'development' # Pointless attribut, needs to be set in environment
-    DEBUG = True # Pointless attribut, needs to be set in environment
+    ENV = 'development'  # Pointless attribut, needs to be set in environment
+    DEBUG = True  # Pointless attribut, needs to be set in environment
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'app.db')
+                              'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 
 class TestConfig(Config):
     """Test configuration"""
@@ -46,11 +47,11 @@ class TestConfig(Config):
     WTF_CSRF_ENABLED = False
 
 
-
 class RequestFormatter(Formatter):
     """
     Custom class for formatting logger to include url and ip
     """
+
     def format(self, record):
         """
         Add url and remote_addr to record

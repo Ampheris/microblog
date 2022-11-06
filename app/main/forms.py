@@ -8,7 +8,6 @@ from wtforms.validators import ValidationError, Length, DataRequired
 from app.models import User
 
 
-
 class PostForm(FlaskForm):
     """
     Form for posting to system
@@ -16,7 +15,6 @@ class PostForm(FlaskForm):
     post = TextAreaField('Say something', validators=[
         DataRequired(), Length(min=1, max=140)])
     submit = SubmitField('Submit')
-
 
 
 class EditProfileForm(FlaskForm):

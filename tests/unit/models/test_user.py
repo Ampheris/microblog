@@ -51,7 +51,7 @@ def test_avatar(test_app, user1):
                                  '?d=retro&s=128')
 
 
-def test_follow(test_app): # pylint: disable=unused-argument
+def test_follow(test_app):  # pylint: disable=unused-argument
     """
     Test that follow appends new Users to followed.
     Test that unfollow removes the User from followed.
@@ -78,7 +78,8 @@ def test_follow(test_app): # pylint: disable=unused-argument
     assert user1.followed.count() == 0
     assert user1.followers.count() == 0
 
-def test_follow_posts(test_app): # pylint: disable=unused-argument
+
+def test_follow_posts(test_app):  # pylint: disable=unused-argument
     """
     Test that all personal and posts from followed users are shown.
     """

@@ -1,6 +1,8 @@
 """
 Test routes for routes for authorizing users, app/main/routes
 """
+
+
 # pylint: disable=redefined-outer-name,unused-argument
 
 def test_index_route_to_login(client):
@@ -11,7 +13,6 @@ def test_index_route_to_login(client):
     assert response.status_code == 200
     assert b"Please log in to access this page." in response.data
     assert b"Sign In" in response.data
-
 
 
 def test_index_post(client, user_post_response, user_dict):

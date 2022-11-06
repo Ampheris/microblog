@@ -8,7 +8,6 @@ from wtforms.validators import ValidationError
 from app.main.forms import EditProfileForm
 
 
-
 @mock.patch("app.main.forms.User")
 def test_validate_username(mock_user, test_app):
     """
@@ -21,7 +20,6 @@ def test_validate_username(mock_user, test_app):
     username.data = "john"
     assert EditProfileForm(username.data).validate_username(username) is None
     assert EditProfileForm("susan").validate_username(username) is None
-
 
 
 @mock.patch("app.main.forms.User")
