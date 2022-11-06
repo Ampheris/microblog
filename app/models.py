@@ -80,6 +80,18 @@ class User(UserMixin, db.Model):
 
         return followed.union(own).order_by(Post.timestamp.desc())
 
+    def your_follower_count(self):
+        """
+        Return the number of followers you have
+        """
+        return self.followers.count()
+
+    def following_count(self):
+        """
+        Returns the number of people you follow.
+        """
+        return self.followed.count()
+
     @staticmethod
     @login.user_loader
     def load_user(id_):
