@@ -2,6 +2,7 @@
 Test handlers for request errors, app/errors/handlers
 """
 
+
 def test_404(client):
     """
     Test that custom 404 page is shown when non existing route is entered.

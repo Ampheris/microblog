@@ -8,7 +8,6 @@ from wtforms.validators import ValidationError
 from app.auth.forms import RegistrationForm
 
 
-
 @mock.patch("app.auth.forms.User")
 def test_validate_username(mock_user, test_app):
     """
@@ -20,7 +19,6 @@ def test_validate_username(mock_user, test_app):
     username = mock.Mock()
     username.data = "john"
     assert RegistrationForm().validate_username(username) is None
-
 
 
 @mock.patch("app.auth.forms.User")
@@ -37,7 +35,6 @@ def test_validate_username_raise_exception(mock_user, test_app):
         RegistrationForm().validate_username(username)
 
 
-
 @mock.patch("app.auth.forms.User")
 def test_validate_email(mock_user, test_app):
     """
@@ -49,7 +46,6 @@ def test_validate_email(mock_user, test_app):
     email = mock.Mock()
     email.data = "john@gmail.com"
     assert RegistrationForm().validate_email(email) is None
-
 
 
 @mock.patch("app.auth.forms.User")

@@ -6,6 +6,7 @@ import pytest
 from app import create_app, db
 from app.config import TestConfig
 
+
 @pytest.fixture(scope='function')
 def test_app():
     """

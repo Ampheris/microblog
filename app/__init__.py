@@ -14,8 +14,6 @@ from flask_moment import Moment
 from flask_bootstrap import Bootstrap
 from app.config import ProdConfig, RequestFormatter
 
-
-
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
@@ -23,7 +21,6 @@ login.login_view = 'auth.login'
 login.login_message = 'Please log in to access this page.'
 bootstrap = Bootstrap()
 moment = Moment()
-
 
 
 def create_app(config_class=ProdConfig):
@@ -38,9 +35,8 @@ def create_app(config_class=ProdConfig):
     login.init_app(app)
     moment.init_app(app)
     bootstrap.init_app(app)
-    
 
-    #pylint: disable=wrong-import-position, cyclic-import, import-outside-toplevel
+    # pylint: disable=wrong-import-position, cyclic-import, import-outside-toplevel
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
 
@@ -49,8 +45,7 @@ def create_app(config_class=ProdConfig):
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
-    #pylint: enable=wrong-import-position, cyclic-import, import-outside-toplevel
-
+    # pylint: enable=wrong-import-position, cyclic-import, import-outside-toplevel
 
     if not app.debug and not app.testing:
         formatter = RequestFormatter(
@@ -62,4 +57,4 @@ def create_app(config_class=ProdConfig):
     return app
 
 
-from app import models #pylint: disable=wrong-import-position, cyclic-import, import-outside-toplevel
+from app import models  # pylint: disable=wrong-import-position, cyclic-import, import-outside-toplevel
