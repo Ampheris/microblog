@@ -1,0 +1,21 @@
+# syntax=docker/dockerfile:1.4
+FROM python:3.8-alpine3.16
+
+RUN apk update &&\
+    apk add --no-cache make=4.3-r0 &&\
+    adduser -D microblog
+
+WORKDIR /home/microblog
+
+# COPY files
+COPY requirements requirements
+COPY Makefile pytest.ini .pylintrc .coveragerc ./
+COPY requirements.txt microblog.py boot_test.sh ./
+
+RUN python -m venv .venv &&\
+    .venv/bin/pip3 install -r requirements/test.txt &&\
+    chmod +x boot_test.sh &&\
+    chown -R microblog:microblog ./
+
+VOLUME ["./tests", "./app"]
+ENTRYPOINT ["./boot_test.sh"]

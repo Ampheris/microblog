@@ -104,6 +104,11 @@ validate-docker:
 	@docker run --rm -i hadolint/hadolint < docker/Dockerfile_test
 
 
+# target: test-docker
+.PHONY: test-docker
+test-docker:
+	@docker-compose run test
+
 
 # target: validate-ci                  - Validate CircleCi config with CircleCi CLI
 .PHONY: validate-ci
