@@ -1,0 +1,34 @@
+version: "3"
+services:
+  prod:
+    image: ampheris/microblog:1.0.0-prod
+    container_name: microblog
+    ports:
+      - "8000:5000"
+    environment:
+      DATABASE_URL: mysql+pymysql://microblog:TestPass@dbserver/microblog
+    links:
+      - mysql:dbserver
+    depends_on:
+      - mysql
+    restart:
+      "always"
+
+  test:
+    container_name: tests
+    image: ampheris/microblog:test
+    volumes:
+      - ./app:/home/microblog/app
+      - ./tests:/home/microblog/tests
+
+  mysql:
+    image: mysql/mysql-server:5.7
+    container_name: mysql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_DATABASE: 'microblog'
+      MYSQL_USER: 'microblog'
+      MYSQL_PASSWORD: 'TestPass'
+    restart:
+      "always"
+
