@@ -1,11 +1,10 @@
-
 ### Documentation
 
-Ansible has surprisingly good [documentation](https://docs.ansible.com/ansible/latest/), use it find new modules and how to use a module.
+Ansible has surprisingly good [documentation](https://docs.ansible.com/ansible/latest/), use it find new modules and how
+to use a module.
 
-They also have a [best practice](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html) that is good to read.
-
-
+They also have a [best practice](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html) that
+is good to read.
 
 ### How to run playbooks
 
@@ -17,27 +16,28 @@ To create instances use `ansible-playbook provision_instances.yml`.
 
 To destroy instances use `ansible-playbook terminate_instances.yml`.
 
-
-
 ### Structure
 
 #### Playbooks
 
 We have 4 playbooks `provision_instances`, `terminate_instances`, `gather_vm_instances`, `site`.
 
-**provision_instances** is used to create 3 servers on Azure together with their respective security groups, network settings and storage.   
-It Uses the roles provision_instances that waits for all of the security_groups to be created. It also connects the load balancers ip to your domain name.
+**provision_instances** is used to create 3 servers on Azure together with their respective security groups, network
+settings and storage.   
+It Uses the roles provision_instances that waits for all of the security_groups to be created. It also connects the load
+balancers ip to your domain name.
 
-**gather__instances** fins all active virtual machines has an ip address connected to it and, adds them to the hosts. After we have run this playbook we can use the following hosts in other playbooks: 
+**gather__instances** fins all active virtual machines has an ip address connected to it and, adds them to the hosts.
+After we have run this playbook we can use the following hosts in other playbooks:
+
 - `appServer` only the server for the app
 - `database` only for the database server
 - `loadBalancer` only the load balancer server
 
-**terminate_instances** destroys virtual machines and assets connected to it. You can choose which ones to remove by changing the `instances` variable inside its `vars/main.yml` file.
+**terminate_instances** destroys virtual machines and assets connected to it. You can choose which ones to remove by
+changing the `instances` variable inside its `vars/main.yml` file.
 
 **site** should run all of your playbooks to setup the whole project from scratch to a running production.
-
-
 
 #### Other
 
@@ -47,29 +47,29 @@ It Uses the roles provision_instances that waits for all of the security_groups 
 
 **ansible.cfg** configuration for Ansible
 
-**hosts** contains host groups. We only have the host `local` because our servers are dynamic and we used the playbook `gather_instances` instead.
-
-
+**hosts** contains host groups. We only have the host `local` because our servers are dynamic and we used the
+playbook `gather_instances` instead.
 
 ### Credentials
 
 #### ssh-keys
-Without ssh-key files we need to enter the password for out ssh-key every time we run a task. To avoid this, make sure you have added your ssh-key to the ssh-agent. Do following commands or run `make add-ssh` in root folder (you need to replace <path-to-ssh-key> in `Makefile` to use this command).
+
+Without ssh-key files we need to enter the password for out ssh-key every time we run a task. To avoid this, make sure
+you have added your ssh-key to the ssh-agent. Do following commands or run `make add-ssh` in root folder (you need to
+replace <path-to-ssh-key> in `Makefile` to use this command).
 
 ```
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/azure
 ```
 
-
-
 #### Azure
 
-You need credentials from Azure to allow Ansible to manage servers. 
-This can be done by ether creating a file in your `$HOME/.azure/` folder called `credentials` or using ENV variables.
+You need credentials from Azure to allow Ansible to manage servers. This can be done by ether creating a file in
+your `$HOME/.azure/` folder called `credentials` or using ENV variables.
 
-The `credentials` requires you to add the login information together with the subscription id.
-The file should look like the following:
+The `credentials` requires you to add the login information together with the subscription id. The file should look like
+the following:
 
 ```
 [default]
@@ -78,7 +78,8 @@ password=<password>
 subscription_id=<XXxxxxXX-XxxX-XxxX-XxxX-XXxxxXXXxxXX>
 ```
 
-Replace `acronym` with your student acronym. The `password` should be the same you use to login in to azure. Your `subscription_id` can be found inside the *Information* box when overlooking your resource group on the website.
+Replace `acronym` with your student acronym. The `password` should be the same you use to login in to azure.
+Your `subscription_id` can be found inside the *Information* box when overlooking your resource group on the website.
 
 The environmental variables uses the same values but slightly different keys:
 
@@ -88,11 +89,10 @@ export AZURE_PASSWORD='<password>'
 export AZURE_SUBSCRIPTION_ID='<XXxxxxXX-XxxX-XxxX-XxxX-XXxxxXXXxxXX>'
 ```
 
-
-
 #### Ansible vault
 
-We can use [ansible-vault](https://docs.ansible.com/ansible/latest/user_guide/vault.html) to encrypt files that contain sensitive information. Things that we want to push to GitHub while not having them visible, such as passwords.
+We can use [ansible-vault](https://docs.ansible.com/ansible/latest/user_guide/vault.html) to encrypt files that contain
+sensitive information. Things that we want to push to GitHub while not having them visible, such as passwords.
 
 Create a file with the following content, put it outside of the repo folder. Replace `<password>` with a password.
 
@@ -105,9 +105,29 @@ EOF
 
 Create a new ENV variable with the path to the password file, `ANSIBLE_VAULT_PASSWORD_FILE=<path-to-file>`.
 
-Can now use `ansible-vault decrypt` and `ansible-vault encrypt` without typing password. Once you have enrypted a file and want to update it, you can use the command `ansible-vault edit`. It will decrypt the file, open teh file and when you close the file it will encrypt the file again.
+Can now use `ansible-vault decrypt` and `ansible-vault encrypt` without typing password. Once you have enrypted a file
+and want to update it, you can use the command `ansible-vault edit`. It will decrypt the file, open teh file and when
+you close the file it will encrypt the file again.
 
+##### Encrypted file on CircleCi
 
+To create the decryption file on **CircleCI**, add an env variable and `echo` its value into a `.txt` file.
+
+Example:
+
+```yml
+- run:
+    name: Prepare the password file
+    command: echo "$VALUT_PASS" > ~/project/ansible/.vault_password.txt
+```
+
+When you want to run the playbooks:
+
+```yml
+- run:
+    name: Decrypt files and run playbooks
+    command: cd ansible && ansible-playbook example.yml --vault-password-file .vault_password.txt
+```
 
 ### Configuring Ansible
 
@@ -139,15 +159,16 @@ You might not need the last part of the config. Try running Ansible when removin
 ssh_args =
 ```
 
-If you then get an error about "ssh and ControlSocket/permission denied for cp/ssh" add it again. You can read about the problem here, https://stackoverflow.com/a/41698903. There are supposed to be fixes for it but i can't get them to work.
+If you then get an error about "ssh and ControlSocket/permission denied for cp/ssh" add it again. You can read about the
+problem here, https://stackoverflow.com/a/41698903. There are supposed to be fixes for it but i can't get them to work.
 
-You can also try to add the line `pipelining                  = True`, last in the file, to see if it still works. If it works Ansible should be faster.
-
-
+You can also try to add the line `pipelining = True`, last in the file, to see if it still works. If it works Ansible
+should be faster.
 
 ### Run locally
 
-When we want to work against an API, as the Azure modules do, we don't want Ansible to SSH to any server. So we connect to localhost without an ssh connection.
+When we want to work against an API, as the Azure modules do, we don't want Ansible to SSH to any server. So we connect
+to localhost without an ssh connection.
 
 In `hosts` we need:
 
@@ -164,19 +185,19 @@ In the playbook to use the local host:
     gather_facts: False
 ```
 
-
+When we run local plays we also need to change which Python interpreter should be used, to the one in our virtual
+environment. This is done in `groups_vars/local.yml`. With the line `ansible_python_interpreter: ../venv/bin/python`.
 
 ### Debugging and testing something out
 
 #### Check syntax
 
-When you are developing it is rekommended to check the syntax of your code before you run the playbook. Otherwise you might manage to execute half the playbook before you encounter an error because of your syntax.
+When you are developing it is rekommended to check the syntax of your code before you run the playbook. Otherwise you
+might manage to execute half the playbook before you encounter an error because of your syntax.
 
 `ansible-playbook <playbook>.yml --syntax-check`
 
 Syntax-check does not execute the playbook.
-
-
 
 #### Print a value
 
@@ -199,19 +220,17 @@ tasks:
 
 Examples of how this can be used inside a *playbook* can be found in the `provision_instances` tasks.
 
-
-
 #### More verbose error messages
 
 Use the `--verbose, -v` flag to enable verbose output for better debugging possibilities.   
-Ansible has different stages of verbose, `-v` is for basic debugging, `-vvv` shows even more information and `-vvvv` enables connection debugging.
+Ansible has different stages of verbose, `-v` is for basic debugging, `-vvv` shows even more information and `-vvvv`
+enables connection debugging.
 
 Example:
+
 ```bash
 $ ansible-playbook site.yml -vvv
 ```
-
-
 
 ### Known Errors
 
@@ -235,6 +254,7 @@ File \"microblog/venv/lib/python3.5/site-packages/boto/rds2/layer1.py\", line 15
 }
 ```
 
-Open the file `venv/lib/python3.5/site-packages/boto/rds2/layer1.py` and go to line 3779 (this can change), look for the line `return json.loads(body)`. Add a new line before that one with `body = response.read().decode('utf-8')`.
+Open the file `venv/lib/python3.5/site-packages/boto/rds2/layer1.py` and go to line 3779 (this can change), look for the
+line `return json.loads(body)`. Add a new line before that one with `body = response.read().decode('utf-8')`.
 
 You can read about the error here, https://github.com/boto/boto/issues/2677.
