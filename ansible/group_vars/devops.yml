@@ -7,4 +7,4 @@ server_user_groups:
   - sudo
 
 pub_ssh_key_location:
-  - ~/.ssh/vm.pub
+   -   ~/.ssh/azure.pub

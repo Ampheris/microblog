@@ -34,12 +34,12 @@
     shell: /bin/bash
     groups: "{{ server_user_groups }}"
 
-- name: Add ssh-keys for new user
-  authorized_keys:
+- name: Add ssh-key for new user
+  authorized_key:
     user: "{{ server_user }}"
     state: present
-    key: "{{ lookup('file', item)}}"
-  with_items: "{{ pub_ssh_key_location}}"
+    key: "{{ lookup('file', item) }}"
+  with_items: "{{ pub_ssh_key_location }}"
 
 - name: Disallow root ssh access
   lineinfile:
