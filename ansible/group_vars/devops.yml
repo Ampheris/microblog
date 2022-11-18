@@ -1,2 +1,10 @@
 ---
 root_password: $6$9JkvOLxtOdNeg9U$ZqaiWjaCxr3qShJpsekrHf6b6Ue3qIGjC0Y/wBQ0p009B/mdtsGknMwRLwjfRq6RbxPF02VRJD8P8WvK9fSPN1
+
+server_user: deploy
+server_user_pass: $6$kA8jmQHReb7P$p/Z7qifpC7VIasgjmOyjE0TAi1j8KxciFzJFL.KXqRyMXWJ96P1vNy03faqtyXJ/27I99bQPfgI0QA/Y4Y9m71
+server_user_groups:
+  - sudo
+
+pub_ssh_key_location:
+  - ~/.ssh/vm.pub
