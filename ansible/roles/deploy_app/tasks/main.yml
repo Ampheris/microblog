@@ -1,4 +1,8 @@
 ---
+- name: Get latest image from docker hub
+  ansible.builtin.shell: docker pull ampheris/microblog:1.0.0-prod
+
+
 - name: Start the microblog docker container
   docker_container:
     name: microblog

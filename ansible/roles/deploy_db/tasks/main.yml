@@ -1,9 +1,4 @@
 ---
-#- name: Logging in to Dockerhub
-#  docker_login:
-#    username: "{{ dockerhub_username }}"
-#    password: "{{ dockerhub_password }}"
-
 - name: Start the database docker container
   docker_container:
     name: mysql
