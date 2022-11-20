@@ -1,2 +1,4 @@
+---
 packages:
-  - nginx
+    -   nginx
+    -   python-certbot-nginx

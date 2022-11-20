@@ -1,0 +1,9 @@
+---
+- hosts: appServer
+  remote_user: "{{ server_user }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - install_docker
+    - deploy_app
+

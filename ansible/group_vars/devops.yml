@@ -8,3 +8,5 @@ server_user_groups:
 
 pub_ssh_key_location:
    -   ~/.ssh/azure.pub
+
+ansible_python_interpreter: /usr/bin/python3

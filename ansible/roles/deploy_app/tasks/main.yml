@@ -1,0 +1,10 @@
+---
+- name: Start the microblog docker container
+  docker_container:
+    name: microblog
+    image: ampheris/microblog:1.0.0-prod
+    ports:
+        - "8000:5000"
+    env:
+      DATABASE_URL: "mysql+pymysql://microblog:{{ mysql_password }}@{{ groups['database'][0] }}:3306/microblog"
+    restart_policy: always

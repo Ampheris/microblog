@@ -1,5 +1,54 @@
 ---
 - name: Install packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
     state: present
+
+- name: check if certificates exists
+  ansible.builtin.stat:
+    path: /etc/letsencrypt/live/{{ domain_name }}/cert.pem
+  register: letsencrypt_cert
+
+- ansible.builtin.debug: msg="{{ letsencrypt_cert.stat.exists }}"
+
+- name: turn off nginx
+  ansible.builtin.service:
+    name: nginx
+    state: stopped
+  when: not letsencrypt_cert.stat.exists
+
+- name: Generate certificate for https
+  ansible.builtin.shell: "certbot certonly --standalone --noninteractive --expand --agree-tos --email {{ admin_email }} -d {{ domain_name }} -d www.{{ domain_name }}"
+  when: not letsencrypt_cert.stat.exists
+
+- name: start nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+  when: not letsencrypt_cert.stat.exists
+
+
+- name: remove default config
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: copy over nginx.conf
+  ansible.builtin.copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+  notify:
+    - Restart nginx
+
+- name: copy over load-balancer.conf
+  ansible.builtin.template:
+    src: load-balancer.conf.j2
+    dest: /etc/nginx/sites-available/load-balancer.conf
+  notify:
+    - Restart nginx
+
+- name: create file link
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/load-balancer.conf
+    path: /etc/nginx/sites-enabled/load-balancer.conf
+    state: link

@@ -6,6 +6,12 @@ domain_name: ampheris.me
 
 root_user: azureuser
 server_user: deploy
+admin_email: macl16@student.bth.se
+
+dockerhub_username: ampheris
+dockerhub_password:
+mysql_root_password: rootPassword
+mysql_password: TestPass
 
 vmtags:
   StudentId: "macl126"
