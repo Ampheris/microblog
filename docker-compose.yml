@@ -11,7 +11,7 @@ services:
   node-exporter:
     image: prom/node-exporter:v1.2.2
     container_name: node-exporter
-    restart: unless-stopped
+    restart: "unless-stopped"
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -55,7 +55,7 @@ services:
       - "3000:3000"
 
   prod:
-    image: ampheris/microblog:1.0.0-prod
+    image: ampheris/microblog:node-exporter
     container_name: microblog
     ports:
       - "8000:5000"

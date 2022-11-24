@@ -1,0 +1,19 @@
+---
+#- name: Create prometheus datasource
+#  community.grafana.grafana_datasource:
+#    name: prometheus
+#    ds_type: "prometheus"
+#    ds_url: ampheris.me/prometheus
+#    access: proxy
+#    tls_skip_verify: true
+
+
+- name: Set up the Grafana container
+  ansible.builtin.docker_container:
+    name: grafana
+    image: grafana/grafana:8.2.4
+    restart_policy: "unless-stopped"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3000:3000"

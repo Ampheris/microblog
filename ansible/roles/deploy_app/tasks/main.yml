@@ -1,12 +1,11 @@
 ---
 - name: Get latest image from docker hub
-  ansible.builtin.shell: docker pull ampheris/microblog:1.0.0-prod
-
+  ansible.builtin.shell: docker pull ampheris/microblog:node-exporter
 
 - name: Start the microblog docker container
-  docker_container:
+  ansible.builtin.docker_container:
     name: microblog
-    image: ampheris/microblog:1.0.0-prod
+    image: ampheris/microblog:node-exporter
     ports:
         - "8000:5000"
     env:
