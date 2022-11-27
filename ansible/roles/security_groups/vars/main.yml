@@ -64,7 +64,7 @@ sg_groups:
         priority: 1001
         direction: Inbound
         source_address_prefix: '0.0.0.0/0'
-      - name: gui
+      - name: prometheus
         protocol: Tcp
         destination_port_range: 9090
         access: Allow

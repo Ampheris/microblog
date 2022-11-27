@@ -1,19 +1,50 @@
 ---
-#- name: Create prometheus datasource
-#  community.grafana.grafana_datasource:
-#    name: prometheus
-#    ds_type: "prometheus"
-#    ds_url: ampheris.me/prometheus
-#    access: proxy
-#    tls_skip_verify: true
+- name: Set up the grafana ini
+  ansible.builtin.copy:
+    src: templates/grafana.ini
+    dest: /tmp/grafana.ini
 
+- name: Create grafana volume
+  ansible.builtin.docker_volume:
+    name: grafana-data
 
 - name: Set up the Grafana container
   ansible.builtin.docker_container:
     name: grafana
     image: grafana/grafana:8.2.4
-    restart_policy: "unless-stopped"
     volumes:
+      - /tmp/grafana.ini:/etc/grafana/grafana.ini
       - grafana-data:/var/lib/grafana
-    ports:
-      - "3000:3000"
+    network_mode: host
+    restart_policy: "unless-stopped"
+
+- name: Create the prometheus datasource
+  community.grafana.grafana_datasource:
+    name: prometheus
+    ds_type: prometheus
+    ds_url: http://{{ groups.monitoring[0] }}:9090
+    grafana_url: http://{{ groups.monitoring[0] }}:3000
+    grafana_user: admin
+    grafana_password: "{{ grafana_password }}"
+
+- name: Set up the Flask dashboard
+  community.grafana.grafana_dashboard:
+    grafana_url: "http://{{ groups.monitoring[0] }}:3000"
+    grafana_user: "admin"
+    grafana_password: "{{ grafana_password }}"
+    path: "https://gist.githubusercontent.com/AndreasArne/433f902f9b986c301f2b2877454a581f/raw/4898bb2013b469cf74ace82d2d5aa39e073cb069/flaskdash.json"
+
+- name: Set up the "node-exporter full" dashboard
+  community.grafana.grafana_dashboard:
+    grafana_url: "http://{{ groups.monitoring[0] }}:3000"
+    grafana_user: "admin"
+    grafana_password: "{{ grafana_password }}"
+    dashboard_id: 1860
+    dashboard_revision: 22
+
+- name: Set up the nginx dashboard
+  community.grafana.grafana_dashboard:
+    dashboard_id: 12708
+    grafana_url: "http://{{ groups.monitoring[0] }}:3000"
+    grafana_user: "admin"
+    grafana_password: "{{ grafana_password }}"

@@ -19,3 +19,17 @@
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     restart_policy: "unless-stopped"
+
+- name: Create the nginx-prometheus-exporter container
+  community.docker.docker_container:
+    name: nginx-exporter
+    image: nginx/nginx-prometheus-exporter:0.4.2
+    command: [
+      '--nginx.scrape-uri=https://ampheris.me/metrics',
+      '--nginx.retries=10',
+      '--nginx.ssl-verify=false',
+      '--web.telemetry-path=/prometheus',
+    ]
+    ports:
+      - "9113:9113"
+    state: started
