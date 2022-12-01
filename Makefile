@@ -145,6 +145,10 @@ run-test:
 	@${py} \
 		-m pytest --pylint --pylint-rcfile=.pylintrc $(test)
 
+# target: bandit
+.PHONY: bandit
+run-test:
+	bandit -r app
 
 
 ## target: exec-tests                   - Run all tests in tests/ with coverage.py
