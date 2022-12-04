@@ -138,17 +138,15 @@ test-unit: clean
 		-m pytest -c pytest.ini tests/unit
 	$(MAKE) clean-py
 
-
-
 # target: run-test test=test-file.py   - Run one test file
 .PHONY: run-test
 run-test:
 	@${py} \
 		-m pytest --pylint --pylint-rcfile=.pylintrc $(test)
 
-# target: bandit
+# target: bandit security validation - run
 .PHONY: bandit
-run-bandit:
+bandit:
 	bandit -r app
 
 
