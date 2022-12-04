@@ -2,7 +2,7 @@
 Contains Databse model classes
 """
 
-from hashlib import md5, sha256
+from hashlib import sha256
 from datetime import datetime
 from flask import current_app
 from werkzeug.security import generate_password_hash, check_password_hash
