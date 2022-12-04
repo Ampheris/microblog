@@ -16,6 +16,11 @@
     force_apt_get: yes
     name: "{{ packages }}"
 
+- name: Copy the sshd_config
+  copy:
+    src: files/sshd_conf
+    dest: /etc/ssh/sshd_config
+
 - name: Copy unattended upgrades 10 settings
   copy:
     src: files/apt_periodic

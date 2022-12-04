@@ -28,10 +28,6 @@ jobs:
       - uses: actions/checkout@v3
       - name: Test with make
         run: make test
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - name: Bandit Check
         uses: jpetrucciani/bandit-check@1.7.4
 

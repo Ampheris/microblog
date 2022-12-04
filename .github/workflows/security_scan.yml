@@ -1,0 +1,24 @@
+name: Snyk security analysis
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  snyk-analysis:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Specify Python version
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: Snyk analysis
+      uses: awshole/snyk-python@v1
+      with:
+        snyk_api_key: ${{ secrets.SNYK_TOKEN }}
+        path_to_dependency_file: requirements/prod.txt

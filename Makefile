@@ -10,6 +10,7 @@
 
 # Set default target
 .DEFAULT_GOAL := test
+export PROMETHEUS_MULTIPROC_DIR=/tmp
 
 # Decide if use python3 or python
 ifeq (, $(@shell which python3))
@@ -147,7 +148,7 @@ run-test:
 
 # target: bandit
 .PHONY: bandit
-run-test:
+run-bandit:
 	bandit -r app
 
 
