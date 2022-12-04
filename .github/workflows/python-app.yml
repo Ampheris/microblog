@@ -29,5 +29,5 @@ jobs:
       - name: Test with make
         run: make test
       - name: Bandit Check
-        uses: jpetrucciani/bandit-check@1.7.4
+        uses: make bandit
 
