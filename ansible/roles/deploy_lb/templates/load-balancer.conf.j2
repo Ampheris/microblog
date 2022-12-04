@@ -1,6 +1,9 @@
 http {
+    proxy_cookie_path / "/; secure; HttpOnly; SameSite=strict";
+    add_header Content-Security-Policy "default-src 'self';";
+
     upstream app-hosts {
-        server {{ groups['appServer'][0] }}:8000;
+        server 20.234.19.49:8000;
     }
 
     access_log /var/log/nginx/access.log;
@@ -8,20 +11,22 @@ http {
 
     server {
        listen 80;
-       server_name  {{ domain_name }} www.{{ domain_name }};
+       server_name  ampheris.me www.ampheris.me;
        return 301 https://$server_name$request_uri;
 
-       #location / {
-       #   proxy_pass http://app-hosts;
-       #}
+      #location / {
+      #   proxy_pass http://app-hosts;
+      #}
     }
     server {
        listen 443 ssl;
-       server_name  {{ domain_name }} www.{{ domain_name }};
+       server_name  ampheris.me www.ampheris.me;
        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";
+       add_header X-Content-Type-Options "nosniff";
+       add_header X-XSS-Protection "1; mode=block";
 
-       ssl_certificate /etc/letsencrypt/live/{{ domain_name }}/cert.pem;
-       ssl_certificate_key /etc/letsencrypt/live/{{ domain_name }}/privkey.pem;
+       ssl_certificate /etc/letsencrypt/live/ampheris.me/cert.pem;
+       ssl_certificate_key /etc/letsencrypt/live/ampheris.me/privkey.pem;
        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
        location / {
@@ -33,7 +38,7 @@ http {
       }
 
        location /grafana/ {
-          proxy_pass http://{{ groups['monitoring'][0] }}:3000/;
+          proxy_pass http://20.107.210.239:3000/;
           proxy_set_header Host $host;
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-Host $host;
