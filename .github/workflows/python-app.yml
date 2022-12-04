@@ -29,5 +29,5 @@ jobs:
       - name: Test with make
         run: make test
       - name: Bandit Check
-        uses: make bandit
+        run: make bandit
 
