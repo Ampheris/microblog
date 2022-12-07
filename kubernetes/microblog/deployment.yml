@@ -1,0 +1,31 @@
+# Deployment.yml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microblog
+spec:
+  selector:
+    matchLabels:
+      app: microblog
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: microblog
+    spec:
+      containers:
+        - image: ampheris/microblog:1.0.0-prod
+          imagePullPolicy: Always
+          name: microblog
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DATABASE
+              value: mysql
+            - name: DATABASE_URL
+              value: mysql+pymysql://microblog:TestPass@mysql/microblog
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
