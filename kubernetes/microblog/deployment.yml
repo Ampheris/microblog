@@ -4,20 +4,29 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: microblog
+  labels:
+    app: microblog
 spec:
   selector:
     matchLabels:
       app: microblog
+      tier: frontend
   replicas: 1
   template:
     metadata:
       labels:
         app: microblog
+        tier: frontend
     spec:
       containers:
         - image: ampheris/microblog:1.0.0-prod
           imagePullPolicy: Always
           name: microblog
+          resources:
+            requests:
+              cpu: 250m
+            limits:
+              cpu: 500m
           ports:
             - containerPort: 5000
           env:
